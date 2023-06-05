@@ -1,8 +1,6 @@
-# [RoomGPT](https://roomGPT.io) - redesign your room with AI
+# [roomGPT.io](https://roomGPT.io)
 
-This is the previous and open source version of RoomGPT.io (a paid SaaS product). It's the very first version of roomGPT without the auth, payments, or additional features and it's simple to clone, deploy, and play around with.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nutlope/roomGPT&env=REPLICATE_API_KEY&project-name=room-GPT&repo-name=roomGPT)
+roomGPT helps design rooms in seconds using AI.
 
 [![Room GPT](./public/screenshot.png)](https://roomGPT.io)
 
@@ -21,8 +19,8 @@ git clone https://github.com/Nutlope/roomGPT
 ### Creating a account on Replicate to get an API key.
 
 1. Go to [Replicate](https://replicate.com/) to make an account.
-2. Click on your profile picture in the top left corner, and click on "API Tokens".
-3. Here you can find your API token. Copy it.
+2. Click on your profile picture in the top right corner, and click on "Dashboard".
+3. Click on "Account" in the navbar. And, here you can find your API token, copy it.
 
 ### Storing the API keys in .env
 
@@ -44,12 +42,21 @@ Then, run the application in the command line and it will be available at `http:
 npm run dev
 ```
 
+## Auth setup
+
+1. Use `openssl rand -base64 32` to generate NEXTAUTH_SECRET
+2. Add DB URL and SHADOW DB URL from Neon
+3. Create a new project in console.cloud.google.com
+4. Click configure consent screen in API credentials page and click external
+5. Add an app name, do not upload logo, add authorized domain
+6. Publish app
+7. Create credentials -> Oauth client ID
+8. Run npx prisma db push && prisma migrate dev && prisma generate
+
 ## One-Click Deploy
 
 Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nutlope/roomGPT&env=REPLICATE_API_KEY&project-name=room-GPT&repo-name=roomGPT)
+> Note: You will need to configure auth by following the setup above by using Neon and next-auth and Stripe for payments in order to deploy with Vercel.
 
-## License
-
-This repo is MIT licensed.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Nutlope/roomGPT&env=REPLICATE_API_KEY,NEXTAUTH_SECRET,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,DATABASE_URL,SHADOW_DATABASE_URL,NEXTAUTH_URL&project-name=room-GPT&repo-name=roomGPT)

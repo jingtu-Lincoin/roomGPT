@@ -4,7 +4,7 @@ const VerifyCode = ({ onClick, seconds = 60 }) => {
     const [time, setTime] = useState(0)
     const timer = useRef(null)
 
-    useEffect(() => {
+    useEffect((): any => {
         timer.current && clearInterval(timer.current);
         return () => timer.current && clearInterval(timer.current);
     }, []);

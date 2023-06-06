@@ -24,7 +24,7 @@ export default async function handler(
   // Check if user is logged in
   const session = await getServerSession(req, res, authOptions);
   if (!session || !session.user) {
-    return res.status(500).json("Login to upload.");
+    return res.status(500).json("登录后上传.");
   }
 
   // Get user from DB
@@ -73,6 +73,22 @@ export default async function handler(
         ? "a video gaming room"
         : `a ${theme.toLowerCase()} ${room.toLowerCase()}`;
 
+    const params = {
+      version:
+          "854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
+      input: {
+        image: imageUrl,
+        prompt: prompt,
+        scale: 9,
+        a_prompt:
+            "best quality, photo from Pinterest, interior, cinematic photo, ultra-detailed, ultra-realistic, award-winning, interior design, natural lighting",
+        n_prompt:
+            "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+      },
+    };
+
+    console.log("params", JSON.stringify(params));
+
     // POST request to Replicate to start the image restoration generation process
     let startResponse = await fetch(
       "https://api.replicate.com/v1/predictions",
@@ -84,21 +100,22 @@ export default async function handler(
         },
         body: JSON.stringify({
           version:
-            "854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
+              "854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
           input: {
             image: imageUrl,
             prompt: prompt,
             scale: 9,
             a_prompt:
-              "best quality, photo from Pinterest, interior, cinematic photo, ultra-detailed, ultra-realistic, award-winning, interior design, natural lighting",
+                "best quality, photo from Pinterest, interior, cinematic photo, ultra-detailed, ultra-realistic, award-winning, interior design, natural lighting",
             n_prompt:
-              "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
-          },
+                "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+          }
         }),
       }
     );
 
     let jsonStartResponse = await startResponse.json();
+    console.log("jsonStartResponse", jsonStartResponse);
 
     let endpointUrl = jsonStartResponse.urls.get;
     const originalImage = jsonStartResponse.input.image;

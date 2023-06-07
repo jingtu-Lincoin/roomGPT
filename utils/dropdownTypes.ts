@@ -1,22 +1,22 @@
 export type themeType =
-  | "Modern"
-  | "Vintage"
-  | "Minimalist"
-  | "Professional"
-  | "Tropical"
-  | "Industrial"
-  | "Neoclassic";
+    | "Modern"
+    | "Vintage"
+    | "Minimalist"
+    | "Professional"
+    | "Tropical"
+    | "Industrial"
+    | "Neoclassic";
 
 export type roomType =
-  | "Living Room"
-  | "Dining Room"
-  | "Bedroom"
-  | "Bathroom"
-  | "Office"
-  | "Kitchen"
-  | "Basement"
-  | "Outdoor Patio"
-  | "Gaming Room";
+    | "Living Room"
+    | "Dining Room"
+    | "Bedroom"
+    | "Bathroom"
+    | "Office"
+    | "Kitchen"
+    | "Basement"
+    | "Outdoor Patio"
+    | "Gaming Room";
 
 export const themes: themeType[] = [
   "现代",

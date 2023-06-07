@@ -17,7 +17,7 @@ export default async function handler(
     }
     const code = Util.randomNumbers(4);
     console.log("sms code: " + code+ " tel: " + tel);
-  //  new SmsbaoSender().send_sms(tel,code);
+    new SmsbaoSender().send_sms(tel,code);
     new SmsHelper().addCode(tel,code);
     return res.status(200).json({code: 200, msg: "验证码已发送"});
 }

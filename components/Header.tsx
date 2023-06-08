@@ -50,8 +50,11 @@ export default function Header({
               height={28}
             />
           ) : (
-              <div>{tel}</div>
-          )}
+              <Link href="/user" >
+                <div>{tel}</div>
+              </Link>
+          )
+          }
         </div>
       ) : (
         <Link

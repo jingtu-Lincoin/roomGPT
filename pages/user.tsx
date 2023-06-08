@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import {toast, Toaster} from "react-hot-toast";
 import useSWR from "swr";
 import md5 from "md5";
+import Util from "../module/core/Util";
 
 
 const User: NextPage = () => {
@@ -38,16 +39,25 @@ const User: NextPage = () => {
             return (
                 <tr key={index}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.id}
+                    {purchase.outTradeNo}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.name}
+                    {purchase.creditAmount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.price}
+                    {purchase.totalAmount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.createTime}
+                    {purchase.channel}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {purchase.payStatus==="2"?"已支付":"未支付"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {Util.formatDateByString(purchase.createdAt)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {purchase.payTime}
                 </td>
                 </tr>
             )
@@ -111,8 +121,11 @@ const User: NextPage = () => {
     }
 
 
+    function loginOut() {
+        signIn("auth0", { callbackUrl: "/" });
+    }
 
-  return (
+    return (
       <div className="flex max-w-6xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
         <Head>
           <title>用户信息</title>
@@ -132,32 +145,23 @@ const User: NextPage = () => {
                 <div className={showUserInfo?'':'hidden'}>
                     <div className="">手机号：{user?.tel}</div>
                     <div className="mt-5">套餐余量：{user?.credits}</div>
+                    <button className="rounded-full bg-violet-600 w-60 h-10 inline-block" onClick={loginOut}>退出登录</button>
                 </div>
                 <div className={showPurchase?'':'hidden'}>
                     <table className="border-collapse table-auto w-full text-sm">
                         <thead>
                         <tr className="leading-10 h-10">
-                            <th className="border-b dark:border-slate-600">Song</th>
-                            <th className="border-b dark:border-slate-600">Artist</th>
-                            <th className="border-b dark:border-slate-600">Year</th>
+                            <th className="border-b dark:border-slate-600">单号</th>
+                            <th className="border-b dark:border-slate-600">购买点数</th>
+                            <th className="border-b dark:border-slate-600">金额</th>
+                            <th className="border-b dark:border-slate-600">支付渠道</th>
+                            <th className="border-b dark:border-slate-600">支付状态</th>
+                            <th className="border-b dark:border-slate-600">创建时间</th>
+                            <th className="border-b dark:border-slate-600">支付时间</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr className="leading-10 h-10">
-                            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                            <td>Malcolm Lockyer</td>
-                            <td>1961</td>
-                        </tr>
-                        <tr className="leading-10 h-10">
-                            <td>Witchy Woman</td>
-                            <td>The Eagles</td>
-                            <td>1972</td>
-                        </tr>
-                        <tr className="leading-10 h-10">
-                            <td>Shining Star</td>
-                            <td>Earth, Wind, and Fire</td>
-                            <td>1975</td>
-                        </tr>
+                            {purchaseTrs}
                         </tbody>
                     </table>
                 </div>

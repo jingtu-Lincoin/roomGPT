@@ -34,6 +34,7 @@ export default async function handler(
                 payStatus: '1',
                 channel: channel,
                 outTradeNo: outTradeNo,
+                totalAmount: mealset?.price,
                 bid: meetsetId,
             }
         });

@@ -50,7 +50,8 @@ export default async function handler(
                     outTradeNo: payResult.trade_order_id,
                 },
                 data: {
-                    payStatus: '2'
+                    payStatus: '2',
+                    payTime: new Date(),
                 }
             });
             return res.status(200).write("success");

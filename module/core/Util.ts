@@ -41,6 +41,7 @@ export default class Util {
    * @param date 时间字符串 2023-06-05T07:37:41.446Z
    */
   static formatDateByString(date: string) {
+    if(!date) return '';
     const dateObj = new Date(date);
     const year = dateObj.getFullYear();
     const month = dateObj.getMonth() + 1;

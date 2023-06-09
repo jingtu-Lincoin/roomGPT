@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import {toast, Toaster} from "react-hot-toast";
 import useSWR from "swr";
@@ -20,19 +20,12 @@ const User: NextPage = () => {
   const [showUserInfo, setShowUserInfo] = useState(true);
   const [showPurchase, setShowPurchase] = useState(false);
   const [showModifyPassword, setShowModifyPassword] = useState(false);
-  const [userData, setUserData] = useState({
-      oldPassword: "",
-      password: "",
-      confirmPassword: "",
-  });
+  const [userData, setUserData] = useState({});
   const {data:purchases} = useSWR("/api/purchases", fetcher);
   const [purchaseTrs, setPurchaseTrs] = useState([]);
 
     function updatePurchaseTrs() {
         if(purchases === undefined) {
-            return;
-        }
-        if (purchaseTrs.length > 0) {
             return;
         }
         const trs = purchases.map((purchase: any, index: number) => {
@@ -45,10 +38,10 @@ const User: NextPage = () => {
                     {purchase.creditAmount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.totalAmount}
+                    {purchase.totalAmount/100} 元
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.channel}
+                    {purchase.channel==="alipay"?"支付宝":purchase.channel==="wx"?"微信":"未知"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {purchase.payStatus==="2"?"已支付":"未支付"}
@@ -57,7 +50,7 @@ const User: NextPage = () => {
                     {Util.formatDateByString(purchase.createdAt)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {purchase.payTime}
+                    {Util.formatDateByString(purchase.payTime)}
                 </td>
                 </tr>
             )
@@ -111,7 +104,13 @@ const User: NextPage = () => {
             oldPassword: md5(userData.oldPassword),
             password: md5(userData.password),
         }
-        const res = await fetch("/api/modifyPassword", {});
+        const res = await fetch("/api/modifyPassword", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(params),
+        });
         const result = await res.json();
         if(result.code === 200) {
             toast.success("修改密码成功");
@@ -122,7 +121,7 @@ const User: NextPage = () => {
 
 
     function loginOut() {
-        signIn("auth0", { callbackUrl: "/" });
+        signOut({callbackUrl: "/"});
     }
 
     return (
@@ -145,7 +144,7 @@ const User: NextPage = () => {
                 <div className={showUserInfo?'':'hidden'}>
                     <div className="">手机号：{user?.tel}</div>
                     <div className="mt-5">套餐余量：{user?.credits}</div>
-                    <button className="rounded-full bg-violet-600 w-60 h-10 inline-block" onClick={loginOut}>退出登录</button>
+                    <button className="rounded-full mt-10 bg-violet-600 w-28 h-10 inline-block" onClick={loginOut}>退出登录</button>
                 </div>
                 <div className={showPurchase?'':'hidden'}>
                     <table className="border-collapse table-auto w-full text-sm">

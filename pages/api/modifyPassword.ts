@@ -25,6 +25,7 @@ export default async function handler(
         }
     });
     if (user) {
+        console.log(" user.passwrod" + user.password + " oldPassword" + oldPassword);
         if (user.password != oldPassword) {
             return res.status(200).json({code: 401, msg: "原密码错误"});
         }

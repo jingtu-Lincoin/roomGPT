@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
           session.user.tel = token.tel;
       }
       return session
-    },
+    }
   },
   pages: {
     signIn: "/login",

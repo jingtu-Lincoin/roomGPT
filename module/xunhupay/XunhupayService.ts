@@ -10,7 +10,7 @@ export default class XunhupayService {
   private _zfbAppSecret = 'f25f158a718aed3be319a3aac628de36';
   private _wxAppId = '20211112688';
   private _wxAppSecret = 'f119b3338d3de6b92a96cafa680cf6a8';
-  private _notifyUrl = 'http://serverdev.jingtu.info/api/xunhupayCallback';
+  private _notifyUrl = 'http://cm.weijyun.cn/api/xunhupayCallback';
   private _returnUrl = 'http://serverdev.jingtu.info/dashboard';
 
   public async pay(params:any): Promise<any> {
